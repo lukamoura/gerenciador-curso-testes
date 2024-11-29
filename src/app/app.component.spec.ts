@@ -3,7 +3,7 @@ import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { HeaderComponent } from './shared/components/header/header.component';
-import { FakeHeaderComponent} from '../testing/mocks/fake-header.component';
+import { FakeHeaderComponent} from '@testing/mocks/fake-header.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
