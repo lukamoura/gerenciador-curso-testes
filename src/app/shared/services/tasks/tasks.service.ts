@@ -1,20 +1,16 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Task } from '../../interfaces/tasks.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TasksService {
 
+  httpClient = inject(HttpClient);
+
   getAll(): Observable<Task[]> {
-    return of([
-      { title: 'Tarefa 1', completed: false },
-      { title: 'Tarefa 2', completed: true },
-      { title: 'Tarefa 3', completed: false },
-      { title: 'Tarefa 4', completed: true },
-      { title: 'Tarefa 5', completed: false },
-      { title: 'Tarefa 6', completed: true }
-    ]);
+    return this.httpClient.get<Task[]>('/tasks');
   }
 }
