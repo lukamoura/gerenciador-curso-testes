@@ -3,11 +3,7 @@
         <section data-testid="todo-list" class="space-y-4 my-4">
             <h1 class="text-center">Tarefas pendentes</h1>
             @for (task of pending(); track task.title) {
-                <div class="card bg-neutral text-neutral-content" data-testid="todo-list-item">
-                    <div class="card-body items-center text-center">
-                    <h2 class="card-title">{{ task.title }}</h2>
-                    </div>
-                </div>
+                <app-list-item [task]="task" data-testid="todo-list-item"></app-list-item>
             } @empty {
                 <app-no-items class="flex justify-center" />
             }
@@ -16,11 +12,7 @@
         <section data-testid="completed-list" class="space-y-4 my-4">
             <h1 class="text-center">Tarefas concluídas</h1>
             @for (task of completedTasks(); track task.title) {
-                <div class="card bg-neutral text-neutral-content" data-testid="completed-list-item">
-                    <div class="card-body items-center text-center">
-                    <h2 class="card-title">{{ task.title }}</h2>
-                    </div>
-                </div>
+                <app-list-item [task]="task" data-testid="completed-list-item"></app-list-item>
             } @empty {
                 <app-no-items class="flex justify-center" />
             }
