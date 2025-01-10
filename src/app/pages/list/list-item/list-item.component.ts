@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Task } from 'src/app/shared/interfaces/tasks.interface';
 
@@ -12,4 +12,9 @@ import { Task } from 'src/app/shared/interfaces/tasks.interface';
 export class ListItemComponent {
 
   task = input.required<Task>()
+  complete = output<Task>();
+
+  onComplete() {
+    this.complete.emit(this.task());
+  }
 }
