@@ -31,17 +31,40 @@ describe('TasksService', () => {
     const request = httpTestingController.expectOne('/api/tasks');
 
     const fakeTasks: Task[] = [
-      { title: 'Tarefa 1', completed: false },
-      { title: 'Tarefa 2', completed: true },
-      { title: 'Tarefa 3', completed: false },
-      { title: 'Tarefa 4', completed: true },
-      { title: 'Tarefa 5', completed: false },
-      { title: 'Tarefa 6', completed: true }
+      { id: '1', title: 'Tarefa 1', completed: false },
+      { id: '2', title: 'Tarefa 2', completed: true },
+      { id: '3', title: 'Tarefa 3', completed: false },
+      { id: '4', title: 'Tarefa 4', completed: true },
+      { id: '5', title: 'Tarefa 5', completed: false },
+      { id: '6', title: 'Tarefa 6', completed: true }
     ]
 
     request.flush(fakeTasks);
 
     tick();
     expect(result).toEqual(fakeTasks);
+  }));
+
+  it('patch() deve atualizar uma tarefa', fakeAsync(() => {
+    
+    const fakeTask: Task = { id: '1', title: 'Tarefa 1', completed: false };
+
+    let result: Task | null = null;
+
+    service.patch(fakeTask.id, { completed: true }).subscribe((response) => {
+      result = response;
+    });
+    const request = httpTestingController.expectOne((req) => {
+      return req.method === 'PATCH' && req.url === `/api/tasks/1`;
+    });
+
+    const fakeResponse = { ...fakeTask, completed: true };
+
+    request.flush(fakeResponse);
+
+    tick();
+    
+    expect(result).toEqual(fakeResponse);
+
   }));
 });
