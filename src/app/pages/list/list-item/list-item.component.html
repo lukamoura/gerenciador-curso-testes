@@ -2,7 +2,12 @@
     <div class="card-body items-center text-center">
         <h2 class="card-title" data-testid="list-item-task-title">{{ task().title }}</h2>
         <div class="w-full card-actions justify-end">
-            <button data-testid="list-item-complete-action" (click)="onComplete()" class="btn btn-primary btn-xs">Completar</button>
+            @if (task().completed) {
+                <button data-testid="list-item-mark-as-pending-action" (click)="onMarkAsPending()" class="btn btn-secondary btn-xs">Desfazer</button>   
+            } @else {
+                <button data-testid="list-item-complete-action" (click)="onComplete()" class="btn btn-primary btn-xs">Completar</button>
+            }
+            
         </div>
     </div>
 </div>
