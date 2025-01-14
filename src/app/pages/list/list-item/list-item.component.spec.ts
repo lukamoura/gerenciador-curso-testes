@@ -12,15 +12,17 @@ async function setup(fakeTask: Task) {
     template: `<app-list-item 
       [task]="task" 
       (complete)="onCompleteTask($event)"
+      (notComplete)="onNotComplete($event)"
       ></app-list-item>`,
   })
   class HostComponent {
     task = fakeTask;
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    onCompleteTask() {
+    onCompleteTask() {}
 
-    }
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    onNotComplete() {}
   }
 
   await TestBed.configureTestingModule({
@@ -48,23 +50,89 @@ describe('ListItemComponent', () => {
     expect(textContent).toBe(fakeTask.title);
   })
 
-  it('deve emitir um evento ao completar a tarefa', async () => {
-
-    const fakeTask: Task = {
-      id: '1',
-      title: 'Item 1',
-      completed: false
-    };
-
-    const {fixture, testHelper} = await setup(fakeTask);
-
-    const onCompleteTaskSpy = jest.spyOn(fixture.componentInstance, 'onCompleteTask');
+  describe('quando a tarefa não estiver concluída', () => {
     
-    fixture.detectChanges();
+    it('deve renderizar o botão de concluir tarefa', async () => {
+      const fakeTask: Task = {
+        id: '1',
+        title: 'Item 1',
+        completed: false
+      };
+  
+      const {fixture, testHelper} = await setup(fakeTask);
+      
+      fixture.detectChanges();
+  
+      const completeBtnDebugEl = testHelper.queryByTestId('list-item-complete-action');
+  
+      expect(completeBtnDebugEl).toBeTruthy();
 
-    const completeBtnDebugEl = testHelper.queryByTestId('list-item-complete-action');
-    completeBtnDebugEl.triggerEventHandler('click', null);
+      const markAsPendingDebugEl = testHelper.queryByTestId('list-item-mark-as-pending-action');
 
-    expect(onCompleteTaskSpy).toHaveBeenCalled();
-  });
+      expect(markAsPendingDebugEl).toBeNull();
+    });
+
+    it('deve emitir um evento ao completar a tarefa', async () => {
+      const fakeTask: Task = {
+        id: '1',
+        title: 'Item 1',
+        completed: false
+      };
+  
+      const {fixture, testHelper} = await setup(fakeTask);
+  
+      const onCompleteTaskSpy = jest.spyOn(fixture.componentInstance, 'onCompleteTask');
+      
+      fixture.detectChanges();
+  
+      const completeBtnDebugEl = testHelper.queryByTestId('list-item-complete-action');
+      completeBtnDebugEl.triggerEventHandler('click', null);
+  
+      expect(onCompleteTaskSpy).toHaveBeenCalled();
+    });
+  });  
+
+  describe('quando a tarefa estiver concluída', () => {
+    it('deve renderizar o botão de remarcar tarefa como pendente', async () => {
+      const fakeTask: Task = {
+        id: '1',
+        title: 'Item 1',
+        completed: true
+      };
+  
+      const {fixture, testHelper} = await setup(fakeTask);
+      
+      fixture.detectChanges();
+  
+      const markAsPendingDebugEl = testHelper.queryByTestId('list-item-mark-as-pending-action');
+
+      expect(markAsPendingDebugEl).toBeTruthy();
+
+      const completeBtnDebugEl = testHelper.queryByTestId('list-item-complete-action');
+  
+      expect(completeBtnDebugEl).toBeNull();
+
+      
+    });
+
+    it('deve emitir um evento que remarque a tarefa como pendente', async () => {
+      const fakeTask: Task = {
+        id: '1',
+        title: 'Item 1',
+        completed: true
+      };
+  
+      const {fixture, testHelper} = await setup(fakeTask);
+  
+      const onNotCompleteSpy = jest.spyOn(fixture.componentInstance, 'onNotComplete');
+      
+      fixture.detectChanges();
+  
+      const markAsPendingDebugEl = testHelper.queryByTestId('list-item-mark-as-pending-action');
+      
+      markAsPendingDebugEl.triggerEventHandler('click', null);
+  
+      expect(onNotCompleteSpy).toHaveBeenCalled();
+    });
+  });  
 });
