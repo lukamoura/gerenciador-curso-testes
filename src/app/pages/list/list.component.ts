@@ -28,6 +28,10 @@ export class ListComponent implements OnInit {
     this.tasksService.patch(task.id, {completed: true}).subscribe(task => this.updateTask(task));
   }
 
+  onNotComplete(task: Task): void {
+    this.tasksService.patch(task.id, {completed: false}).subscribe(task => this.updateTask(task));
+  }
+
   private updateTask(task: Task): void {
     this.tasks.update(tasks => tasks.map(t => t.id === task.id ? task : t));
   }
