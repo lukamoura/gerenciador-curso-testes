@@ -95,14 +95,48 @@ describe('ListComponent', () => {
 
       fixture.detectChanges();
 
-      const todoDebugEl = testHelper.queryByTestId('todo-list-item');
-      (todoDebugEl.componentInstance as FakeListItemComponent).complete.emit(fakeTask);
+      expect(testHelper.queryByTestId('completed-list-item')).toBeNull();
+
+      const todoItemDebugEl = testHelper.queryByTestId('todo-list-item');
+
+      (todoItemDebugEl.componentInstance as FakeListItemComponent).complete.emit(fakeTask);
 
       expect(tasksService.patch).toHaveBeenCalledWith(fakeTask.id, { completed: true });
 
       fixture.detectChanges();
       
       expect(testHelper.queryByTestId('completed-list-item')).toBeTruthy();
+    });
+  });
+
+  describe('quando a tarefa está concluída', () => {
+    it('deve marcar a tarefa como pendente', () => {
+
+      const fakeTask: Task = { id: '1', title: 'Tarefa 1', completed: true };
+      const fakeTasks: Task[] = [fakeTask];
+
+      (tasksService.getAll as jest.Mock).mockReturnValue(of(fakeTasks));
+
+      const pendingTaskResponse = { ...fakeTask, completed: false };
+
+      (tasksService.patch as jest.Mock).mockReturnValue(of(pendingTaskResponse));
+
+      fixture.detectChanges();
+
+      expect(testHelper.queryByTestId('completed-list-item')).toBeTruthy();
+      expect(testHelper.queryByTestId('todo-list-item')).toBeNull();
+
+      const completedItemDebugEl = testHelper.queryByTestId('completed-list-item');
+      //const todoDebugEl = testHelper.queryByTestId('todo-list-item');
+
+      (completedItemDebugEl.componentInstance as FakeListItemComponent).notComplete.emit(fakeTask);
+
+      expect(tasksService.patch).toHaveBeenCalledWith(fakeTask.id, { completed: false });
+
+      fixture.detectChanges();
+      
+      expect(testHelper.queryByTestId('todo-list-item')).toBeTruthy();
+      expect(testHelper.queryByTestId('completed-list-item')).toBeNull();
     });
   });
 });
