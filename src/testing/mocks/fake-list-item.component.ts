@@ -10,12 +10,16 @@ import { Task } from "src/app/shared/interfaces/tasks.interface";
 export class FakeListItemComponent implements ListItemComponent {
     task = input.required<Task>();
 
-    notComplete: OutputEmitterRef<Task> = output<Task>();
+    notComplete = output<Task>();
     complete = output<Task>();
+    remove = output<Task>();
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     onMarkAsPending(): void {}
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     onComplete(): void {}   
+
+     // eslint-disable-next-line @typescript-eslint/no-empty-function
+     onRemove(): void {}   
 }
