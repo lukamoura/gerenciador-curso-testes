@@ -32,7 +32,15 @@ export class ListComponent implements OnInit {
     this.tasksService.patch(task.id, {completed: false}).subscribe(task => this.updateTask(task));
   }
 
+  onRemove(task: Task): void {
+    this.tasksService.delete(task.id).subscribe(task => this.removeTask(task));
+  }
+
   private updateTask(task: Task): void {
     this.tasks.update(tasks => tasks.map(t => t.id === task.id ? task : t));
+  }
+
+  private removeTask(task: Task): void {
+    this.tasks.update(tasks => tasks.filter(t => t.id !== task.id));
   }
 }

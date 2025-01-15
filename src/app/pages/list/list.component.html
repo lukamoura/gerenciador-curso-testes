@@ -3,7 +3,7 @@
         <section data-testid="todo-list" class="space-y-4 my-4">
             <h1 class="text-center">Tarefas pendentes</h1>
             @for (task of pending(); track task.title) {
-                <app-list-item [task]="task" data-testid="todo-list-item" (complete)="onComplete($event)"></app-list-item>
+                <app-list-item [task]="task" data-testid="todo-list-item" (complete)="onComplete($event)" (remove)="onRemove($event)"></app-list-item>
             } @empty {
                 <app-no-items class="flex justify-center" />
             }
@@ -12,7 +12,7 @@
         <section data-testid="completed-list" class="space-y-4 my-4">
             <h1 class="text-center">Tarefas concluídas</h1>
             @for (task of completedTasks(); track task.title) {
-                <app-list-item [task]="task" data-testid="completed-list-item" (notComplete)="onNotComplete($event)"></app-list-item>
+                <app-list-item [task]="task" data-testid="completed-list-item" (notComplete)="onNotComplete($event)"  (remove)="onRemove($event)"></app-list-item>
             } @empty {
                 <app-no-items class="flex justify-center" />
             }
