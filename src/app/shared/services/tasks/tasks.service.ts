@@ -17,4 +17,8 @@ export class TasksService {
   patch(id: string, payload: Partial<Task>): Observable<Task> {
     return this.httpClient.patch<Task>(`/api/tasks/${id}`, payload);
   }
+
+  delete(id: string): Observable<Task> {
+    return this.httpClient.delete<Task>(`/api/tasks/${id}`);
+  }
 }
