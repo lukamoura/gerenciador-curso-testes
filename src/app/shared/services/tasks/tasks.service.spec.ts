@@ -1,6 +1,6 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TasksService } from './tasks.service';
-import { Task } from '../../interfaces/tasks.interface';
+import { Task, TaskWithoutId } from '../../interfaces/tasks.interface';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
@@ -86,6 +86,27 @@ describe('TasksService', () => {
     tick();
     
     expect(result).toEqual(fakeTask);
+
+  }));
+
+  it('post() deve criar uma tarefa', fakeAsync(() => {
+    
+    const fakeTask: TaskWithoutId = { title: 'Tarefa 1', completed: false };
+
+    let result: Task | null = null;
+
+    service.post(fakeTask).subscribe((response: Task) => {
+      result = response;
+    });
+    const request = httpTestingController.expectOne((req) => {
+      return req.method === 'POST' && req.url === `/api/tasks`;
+    });
+
+    request.flush(fakeTask);
+
+    tick();
+    
+    expect(result).toEqual(result);
 
   }));
 });
