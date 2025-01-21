@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Task } from '../../interfaces/tasks.interface';
+import { Task, TaskWithoutId } from '../../interfaces/tasks.interface';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -20,5 +20,9 @@ export class TasksService {
 
   delete(id: string): Observable<Task> {
     return this.httpClient.delete<Task>(`/api/tasks/${id}`);
+  }
+
+  post(payload: TaskWithoutId): Observable<Task> {
+    return this.httpClient.post<Task>(`/api/tasks`, payload);
   }
 }
