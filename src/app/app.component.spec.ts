@@ -1,14 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { HeaderComponent } from './shared/components/header/header.component';
-import { FakeHeaderComponent} from '@testing/mocks/fake-header.component';
+import { MockComponent } from 'ng-mocks';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent, RouterTestingModule],
+      imports: [AppComponent],
     }).compileComponents();
 
     TestBed.overrideComponent(AppComponent, {
@@ -16,7 +15,7 @@ describe('AppComponent', () => {
         imports: [HeaderComponent]
       },
       add: {
-        imports: [FakeHeaderComponent]  
+        imports: [MockComponent(HeaderComponent)]  
       }
     })
   });
