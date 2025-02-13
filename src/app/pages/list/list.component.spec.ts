@@ -8,6 +8,7 @@ import { ListItemComponent } from './list-item/list-item.component';
 import { FakeListItemComponent } from "@testing/mocks/fake-list-item.component";
 import { Task } from 'src/app/shared/interfaces/tasks.interface';
 import { TestHelper } from '@testing/helpers/text-helper';
+import { Mock, MockComponent, MockProvider } from 'ng-mocks';
 
 describe('ListComponent', () => {
   let fixture: ComponentFixture<ListComponent>;
@@ -18,10 +19,7 @@ describe('ListComponent', () => {
     TestBed.configureTestingModule({
       imports: [ListComponent],
       providers: [
-        {
-          provide: TasksService,
-          useClass: FakeTasksService
-        }
+        MockProvider(TasksService),
       ]
     })
 
@@ -30,7 +28,7 @@ describe('ListComponent', () => {
         imports: [ListItemComponent]
       },
       add: {
-        imports: [FakeListItemComponent]
+        imports: [MockComponent(ListItemComponent)]
       }
     })
     
@@ -64,9 +62,9 @@ describe('ListComponent', () => {
 
     expect(todoItems.length).toBe(3);
 
-    expect(todoItems[0].componentInstance.task()).toEqual({ title: 'Tarefa 1', completed: false });
-    expect(todoItems[1].componentInstance.task()).toEqual({ title: 'Tarefa 3', completed: false });
-    expect(todoItems[2].componentInstance.task()).toEqual({ title: 'Tarefa 5', completed: false });
+    expect(todoItems[0].componentInstance.task).toEqual({ id: '1', title: 'Tarefa 1', completed: false });
+    expect(todoItems[1].componentInstance.task).toEqual({ id: '3', title: 'Tarefa 3', completed: false });
+    expect(todoItems[2].componentInstance.task).toEqual({ id: '5', title: 'Tarefa 5', completed: false });
 
     const completedSection = fixture.debugElement.query(By.css('[data-testid="completed-list"]'));
 
@@ -76,9 +74,9 @@ describe('ListComponent', () => {
 
     expect(completedItems.length).toBe(3);
 
-    expect(completedItems[0].componentInstance.task()).toEqual({ title: 'Tarefa 2', completed: true });
-    expect(completedItems[1].componentInstance.task()).toEqual({ title: 'Tarefa 4', completed: true });
-    expect(completedItems[2].componentInstance.task()).toEqual({ title: 'Tarefa 6', completed: true });
+    expect(completedItems[0].componentInstance.task).toEqual({ id: '2', title: 'Tarefa 2', completed: true });
+    expect(completedItems[1].componentInstance.task).toEqual({ id: '4', title: 'Tarefa 4', completed: true });
+    expect(completedItems[2].componentInstance.task).toEqual({ id: '6', title: 'Tarefa 6', completed: true });
   });
 
   describe('quando a tarefa está pendente', () => {
